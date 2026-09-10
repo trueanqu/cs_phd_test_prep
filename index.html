@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Підготовка до вступи у аспірантуру: F3 Комп'ютерні науки</title>
+
+    <!-- Clean Modern Typography and Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- STICKY HEADER SECTION -->
+    <header class="sticky-header">
+        <div class="header-container">
+            <div class="brand-info">
+                <h1>F3 Комп'ютерні науки</h1>
+                <span class="badge">Вступний іспит Ph.D.</span>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <span class="stat-label">Всього питань</span>
+                    <span class="stat-value" id="stat-total">30</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Дано відповідей</span>
+                    <span class="stat-value" id="stat-answered">0 / 30</span>
+                </div>
+                <div class="stat-box hidden-until-submit" id="stat-correct-box">
+                    <span class="stat-label">Правильних</span>
+                    <span class="stat-value text-success" id="stat-correct">0</span>
+                </div>
+                <div class="stat-box hidden-until-submit" id="stat-score-box">
+                    <span class="stat-label">Оцінка (100-200)</span>
+                    <span class="stat-value text-primary" id="stat-score">—</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Таймер</span>
+                    <span class="stat-value" id="timer-display">60:00</span>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="header-actions">
+                <button id="submit-btn" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Перевірити тест
+                </button>
+                <button id="open-json-btn" class="btn btn-outline" title="Керувати масивом питань">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Редактор JSON
+                </button>
+                <button id="reset-btn" class="btn btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                    Скинути
+                </button>
+            </div>
+        </div>
+
+        <!-- Final Result Card (Visible after submit) -->
+        <div id="final-result-card" class="result-card hidden">
+            <div class="result-header">
+                <h2 id="result-title">Підсумки перевірки</h2>
+                <span id="result-badge" class="badge"></span>
+            </div>
+            <div class="result-details">
+                <div class="result-metric">
+                    <span class="metric-val" id="res-score">100</span>
+                    <span class="metric-lbl">Підсумковий бал (100-200)</span>
+                </div>
+                <div class="result-metric">
+                    <span class="metric-val" id="res-raw">0 / 120</span>
+                    <span class="metric-lbl">Тестові бали (N)</span>
+                </div>
+                <div class="result-metric">
+                    <span class="metric-val" id="res-correct-cnt">0 / 30</span>
+                    <span class="metric-lbl">Правильні відповіді</span>
+                </div>
+                <div class="result-metric">
+                    <span class="metric-val" id="res-percent">0%</span>
+                    <span class="metric-lbl">Успішність</span>
+                </div>
+            </div>
+            <p id="result-explanation" class="result-note"></p>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="main-content">
+        <!-- Syllabus Info Banner -->
+        <section class="info-banner">
+            <div class="info-content">
+                <h2>Офіційна програма випробувань Ph.D. (СумДУ)</h2>
+                <p>Тест містить 30 питань із 10 спеціальних розділів (по 3 питання з кожного). Оцінювання проводиться за шкалою 100–200 відповідно до формули: <code>O = 100 + 1.004 * (N - 20.4)</code>.</p>
+            </div>
+        </section>
+
+        <!-- Subject Filter Navigation -->
+        <nav class="filter-nav">
+            <button class="filter-btn active" data-section="all">Усі розділи (30)</button>
+            <button class="filter-btn" data-section="1">1. Алгоритми і структури даних</button>
+            <button class="filter-btn" data-section="2">2. Дискретна математика</button>
+            <button class="filter-btn" data-section="3">3. Методи оптимізації</button>
+            <button class="filter-btn" data-section="4">4. Моделювання систем</button>
+            <button class="filter-btn" data-section="5">5. Програмування</button>
+            <button class="filter-btn" data-section="6">6. Системний аналіз</button>
+            <button class="filter-btn" data-section="7">7. Бази даних та знань</button>
+            <button class="filter-btn" data-section="8">8. Захист інформації</button>
+            <button class="filter-btn" data-section="9">9. Інтелектуальні ТІ</button>
+            <button class="filter-btn" data-section="10">10. Паралельні обчислення</button>
+        </nav>
+
+        <!-- Questions List Container -->
+        <div id="questions-container" class="questions-list">
+            <!-- Questions dynamically generated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- MODAL FOR JSON EDITING & IMPORT/EXPORT -->
+    <div id="json-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Керування масивом питань (JSON)</h3>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Ви можете відредагувати масив питань нижче, завантажити його з файлу або вивантажити поточні питання у JSON:</p>
+                <textarea id="json-textarea" spellcheck="false"></textarea>
+            </div>
+            <div class="modal-footer">
+                <label class="btn btn-outline file-upload-btn">
+                    Завантажити JSON файл
+                    <input type="file" id="json-file-input" accept=".json">
+                </label>
+                <button id="download-json-btn" class="btn btn-secondary">Завантажити у файл .json</button>
+                <button id="apply-json-btn" class="btn btn-primary">Застосувати зміни</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
