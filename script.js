@@ -1,7 +1,8 @@
 // Main Application Logic for PhD Exam Preparation
 document.addEventListener("DOMContentLoaded", () => {
     // Load initial questions from questions.js (global window.INITIAL_QUESTIONS)
-    let questionsList = window.INITIAL_QUESTIONS || [];
+    const questionsSetId = Math.floor(Math.random() * window.INITIAL_QUESTIONS.length)
+    let questionsList = window.INITIAL_QUESTIONS[questionsSetId] || [];
     let userAnswers = {}; // { questionId: selectedIndex }
     let isSubmitted = false;
     let timerInterval = null;
